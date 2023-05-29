@@ -1,28 +1,25 @@
 import React, { Dispatch, ReactNode, createContext, useReducer } from "react";
+import firebase from 'firebase/app'
 
-const initialState = {
-    user: null
+interface FetchState {
+    user: firebase.User | null
 }
 
-type ACTIONTYPE = 
-    | { type: '' }
+type FetchActions = 
+    | { type: 'LOGIN', payload: FetchState['user']  }
 
-export const AuthContext = createContext<
+export const AuthContext = createContext<{state: FetchState | null, dispatch:Dispatch<FetchActions>}>(
     {
-        state: typeof initialState, 
-        dispatch: Dispatch<ACTIONTYPE>
-    }
->(
-    {
-        state: initialState, 
+        state: null, 
         dispatch: () => null
     }
 )
 
 
-export const authReducer = (state: typeof initialState, action: ACTIONTYPE) => {
+export const authReducer = (state: FetchState, action: FetchActions) => {
     switch (action.type) {
-        
+        case 'LOGIN':
+            return {...state, user: action.payload}
         default:
             return state
     }
@@ -32,6 +29,7 @@ export const AuthContextProvider = ({children}: {children?: ReactNode}) => {
     const [state, dispatch] = useReducer(authReducer, {
         user: null
     })
+    console.log('AuthContext state:', state)
     return (
         <AuthContext.Provider value={{ state, dispatch }}>
             {children}

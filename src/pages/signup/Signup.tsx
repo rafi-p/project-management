@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from 'react'
+import { useSignup } from '../../hooks/useSignup'
 // styles
 import './Signup.css'
 
@@ -8,6 +9,7 @@ export default function Signup() {
     const [displayName, setDisplayName] = useState('')
     const [thumbnail, setThumbnail] = useState<File | null>(null)
     const [thumbnailError, setThumbnailError] = useState('')
+    const {signup, isPending, error} = useSignup()
 
 
     const handleFileChange = (e: ChangeEvent) => {
@@ -35,6 +37,7 @@ export default function Signup() {
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
+        signup(email, password, displayName, thumbnail!)
     }
 
 
@@ -80,9 +83,21 @@ export default function Signup() {
                 />
                 {thumbnailError && <div className='error'>{thumbnailError}</div>}
             </label>
-            <button className="btn">
-                Sign up
-            </button>
+            {
+                !isPending
+                ? <button className="btn">
+                    Sign up
+                </button>
+                : <button className="btn" disabled>
+                    loading
+                </button>
+            }
+            {
+                error &&
+                <div className='error'>
+                    {error}
+                </div>
+            }
         </form>
     )
 }
