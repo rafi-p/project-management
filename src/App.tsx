@@ -18,7 +18,7 @@ function App() {
     <div className="App">
       {state?.authIsReady && (
         <Router>
-          <Sidebar />
+          {state.user && <Sidebar /> }
           <div className="container">
             <Navbar />
             <Routes>
