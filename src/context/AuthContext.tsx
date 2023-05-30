@@ -7,6 +7,7 @@ interface FetchState {
 
 type FetchActions = 
     | { type: 'LOGIN', payload: FetchState['user']  }
+    | { type: 'LOGOUT'  }
 
 export const AuthContext = createContext<{state: FetchState | null, dispatch:Dispatch<FetchActions>}>(
     {
@@ -20,6 +21,8 @@ export const authReducer = (state: FetchState, action: FetchActions) => {
     switch (action.type) {
         case 'LOGIN':
             return {...state, user: action.payload}
+        case 'LOGOUT':
+            return {...state, user: null}
         default:
             return state
     }

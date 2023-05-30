@@ -3,7 +3,6 @@ import { projectAuth, projectStorage, projectFirestore } from "../firebase/confi
 import { useAuthContext } from "./useAuthContext";
 
 export  function useSignup() {
-    const [isCanceled, setIsCanceled] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [isPending, setIsPending] = useState(false)
     const {dispatch} = useAuthContext()
@@ -41,23 +40,21 @@ export  function useSignup() {
                 photoURL: imgUrl
             })
 
-            if (!isCanceled) {
-                setIsPending(false)
-                setError(null)
-            }
+
+            setIsPending(false)
+            setError(null)
+
 
         } catch (err) {
+
             let message = 'Unknown Error'
             if(err instanceof Error) message = err.message
             console.log(message)
             setError(message)
             setIsPending(false)
+
         }
     }
-
-    useEffect(() => {
-        return(() => setIsCanceled(true))
-    }, [])
 
     return {error, isPending, signup}
 }
