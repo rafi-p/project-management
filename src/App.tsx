@@ -11,6 +11,7 @@ import Signup from './pages/signup/Signup';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import { useAuthContext } from './hooks/useAuthContext';
+import OnlineUsers from './components/OnlineUsers';
 
 function App() {
   const { state } = useAuthContext()
@@ -29,6 +30,7 @@ function App() {
               <Route path='/signup' element={state.user ? <Navigate to='/' /> : <Signup />}/>
             </Routes>
           </div>
+          {state.user && <OnlineUsers />}
         </Router>
       )}
       
